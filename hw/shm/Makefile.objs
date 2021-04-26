@@ -1,0 +1,3 @@
+common-obj-y += shm_core.o
+common-obj-y += shm_hc.o
+common-obj-y += shm.o

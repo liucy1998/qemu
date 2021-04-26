@@ -1,0 +1,3 @@
+common-obj-y += pipe_core.o
+common-obj-y += pipe_hc.o
+common-obj-y += pipe.o

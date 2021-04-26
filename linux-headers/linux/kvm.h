@@ -237,6 +237,12 @@ struct kvm_hyperv_exit {
 #define KVM_EXIT_HYPERV           27
 #define KVM_EXIT_ARM_NISV         28
 
+#define KVM_EXIT_SHM_READ         66
+#define KVM_EXIT_SHM_WRITE        67
+#define KVM_EXIT_PIPE_READ         68
+#define KVM_EXIT_PIPE_WRITE        69
+
+
 /* For KVM_EXIT_INTERNAL_ERROR */
 /* Emulate instruction failed. */
 #define KVM_INTERNAL_ERROR_EMULATION	1
