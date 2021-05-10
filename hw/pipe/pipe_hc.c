@@ -1,6 +1,8 @@
 #include "pipe_hc.h"
 #include "hw/memory_access.h"
 #include "pipe_core.h"
+#include <errno.h>
+#include <string.h>
 
 int hc_rw_host_pipe(struct kvm_run *run, CPUState *cpu, uint64_t *rax, bool is_read) {
     int idx = (int)run->hypercall.args[0];
@@ -26,11 +28,8 @@ int hc_rw_host_pipe(struct kvm_run *run, CPUState *cpu, uint64_t *rax, bool is_r
     if (is_read) {
         // read from host, write to guest
         int64_t data_size;
-        if ((data_size=read(pipe->fd, buf, PIPE_BUF_SIZE)) < 0) {
-            ret = *rax = -1;
-            goto out;
-        }
-        if (data_size > size) {
+        if ((data_size=read(pipe->fd, buf, size)) < 0) {
+            printf("[____PIPE____]: read fifo error! errno: %d, msg: %s\n", errno, strerror(errno));
             ret = *rax = -1;
             goto out;
         }
@@ -53,6 +52,7 @@ int hc_rw_host_pipe(struct kvm_run *run, CPUState *cpu, uint64_t *rax, bool is_r
         while(written < size) {
             ssize_t t = write(pipe->fd, buf+written, size-written);
             if (t < 0) {
+                printf("[____PIPE____]: write fifo error! errno: %d, msg: %s\n", errno, strerror(errno));
                 ret = *rax = -1;
                 goto out;
             }
