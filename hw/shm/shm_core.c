@@ -5,8 +5,10 @@
 static struct SHM shm[MAX_SHM];
 static int shm_num = 0;
 
-int host_shm_init(char *path, uint64_t size) {
-    printf("[____SHM____]: Initialize: path=%s, size=%lu\n", path, size);
+int host_shm_init(char *path, uint64_t size, uint8_t debug) {
+    if (debug) {
+        printf("[____SHM____]: Initialize: path=%s, size=%lu\n", path, size);
+    }
     if (shm_num == MAX_SHM) {
         return -1;
     }
@@ -19,8 +21,11 @@ int host_shm_init(char *path, uint64_t size) {
         return -1;
     }
     shm[idx].size = size;
+    shm[idx].debug = debug;
     close(fd);
-    printf("[____SHM____]: Initialize success!\n");
+    if (debug) {
+        printf("[____SHM____]: Initialize success!\n");
+    }
     return 0;
 }
 

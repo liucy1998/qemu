@@ -28,6 +28,7 @@ typedef struct PipeState {
     PCIDevice parent_obj;
     /*< public >*/
     char *pipe_path;
+    uint8_t debug;
 
 } PipeState;
 
@@ -46,7 +47,7 @@ pci_pipe_reset(PipeState *d)
 static void pci_pipe_realize(PCIDevice *pci_dev, Error **errp)
 {
     PipeState *d = PCI_TEST_DEV(pci_dev);
-    if (host_pipe_init(d->pipe_path) < 0) {
+    if (host_pipe_init(d->pipe_path, d->debug) < 0) {
         fprintf(stderr, "Cannot initialize pipe!");
     }
 }
@@ -59,6 +60,7 @@ static void qdev_pci_pipe_reset(DeviceState *dev)
 
 static Property pci_pipe_properties[] = {
     DEFINE_PROP_STRING("path", PipeState, pipe_path),
+    DEFINE_PROP_UINT8("debug", PipeState, debug, 0),
     DEFINE_PROP_END_OF_LIST(),
 };
 

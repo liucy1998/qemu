@@ -15,7 +15,9 @@ int hc_rw_host_pipe(struct kvm_run *run, CPUState *cpu, uint64_t *rax, bool is_r
 
     guest_addr = (uint64_t)run->hypercall.args[1];
     size = (uint64_t)run->hypercall.args[2];
-    printf("[____PIPE____]: Args: idx=%d, guest_addr=0x%lx, size=%ld\n", idx, guest_addr, size);
+    if (pipe->debug) {
+        printf("[____PIPE____]: Args: idx=%d, guest_addr=0x%lx, size=%ld\n", idx, guest_addr, size);
+    }
 
     int ret;
 

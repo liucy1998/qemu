@@ -10,9 +10,10 @@
 struct Pipe {
     int fd;
     void *buf;
+    uint8_t debug;
 };
 
-int host_pipe_init(char *path);
+int host_pipe_init(char *path, uint8_t debug);
 struct Pipe* get_pipe(int idx);
 
 #endif

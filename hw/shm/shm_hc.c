@@ -14,7 +14,9 @@ int hc_rw_host_shm(struct kvm_run *run, CPUState *cpu, uint64_t *rax, bool is_re
     host_addr_offset = (uint64_t)run->hypercall.args[1];
     guest_addr = (uint64_t)run->hypercall.args[2];
     size = (uint64_t)run->hypercall.args[3];
-    printf("[____SHM____]: Args: idx=%d, offset=%ld, guest_addr=0x%lx, size=%ld\n", idx, host_addr_offset, guest_addr, size);
+    if (shm->debug) {
+        printf("[____SHM____]: Args: idx=%d, offset=%ld, guest_addr=0x%lx, size=%ld\n", idx, host_addr_offset, guest_addr, size);
+    }
 
     if ((host_addr_offset+size) > shm->size) {
         *rax = -1;

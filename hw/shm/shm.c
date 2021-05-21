@@ -29,6 +29,7 @@ typedef struct SHMState {
     /*< public >*/
     char *shm_path;
     uint64_t shm_size;
+    uint8_t debug;
 
 } SHMState;
 
@@ -47,7 +48,7 @@ pci_shm_reset(SHMState *d)
 static void pci_shm_realize(PCIDevice *pci_dev, Error **errp)
 {
     SHMState *d = PCI_TEST_DEV(pci_dev);
-    if (host_shm_init(d->shm_path, d->shm_size) < 0) {
+    if (host_shm_init(d->shm_path, d->shm_size, d->debug) < 0) {
         fprintf(stderr, "Cannot initialize shm!");
     }
 }
@@ -61,6 +62,7 @@ static void qdev_pci_shm_reset(DeviceState *dev)
 static Property pci_shm_properties[] = {
     DEFINE_PROP_STRING("path", SHMState, shm_path),
     DEFINE_PROP_UINT64("size", SHMState, shm_size, 0),
+    DEFINE_PROP_UINT8("debug", SHMState, debug, 0),
     DEFINE_PROP_END_OF_LIST(),
 };
 
