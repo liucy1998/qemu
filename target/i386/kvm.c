@@ -52,6 +52,7 @@
 
 #include "hw/shm/shm_hc.h"
 #include "hw/pipe/pipe_hc.h"
+#include "vmstate.h"
 
 #define DEBUG_KVM
 
@@ -4478,32 +4479,28 @@ int kvm_arch_handle_exit(CPUState *cs, struct kvm_run *run)
         ret = 0;
         break;
     case KVM_EXIT_PIPE_READ:
-        printf("[____PIPE____]: Receive pipe read request\n");
         kvm_cpu_synchronize_state(cs);
         ret = hc_rw_host_pipe(run, cs, &ipc_size, true);
         cpu->env.regs[R_EAX] = ipc_size;
-        printf("[____PIPE____]: Ret = %d, IPC size = %ld\n", ret, ipc_size);
         break;
     case KVM_EXIT_PIPE_WRITE:
-        printf("[____PIPE____]: Receive pipe write request\n");
         kvm_cpu_synchronize_state(cs);
         ret = hc_rw_host_pipe(run, cs, &ipc_size, false);
         cpu->env.regs[R_EAX] = ipc_size;
-        printf("[____PIPE____]: Ret = %d, IPC size = %ld\n", ret, ipc_size);
         break;
     case KVM_EXIT_SHM_READ:
-        printf("[____SHM____]: Receive shm read request\n");
         kvm_cpu_synchronize_state(cs);
         ret = hc_rw_host_shm(run, cs, &ipc_size, true);
         cpu->env.regs[R_EAX] = ipc_size;
-        printf("[____SHM____]: Ret = %d, IPC size = %ld\n", ret, ipc_size);
         break;
     case KVM_EXIT_SHM_WRITE:
-        printf("[____SHM____]: Receive shm write request\n");
         kvm_cpu_synchronize_state(cs);
         ret = hc_rw_host_shm(run, cs, &ipc_size, false);
         cpu->env.regs[R_EAX] = ipc_size;
-        printf("[____SHM____]: Ret = %d, IPC size = %ld\n", ret, ipc_size);
+        break;
+    case KVM_EXIT_VMSTATE:
+        printf("VMSTATE CALL!!!!\n");
+        ret = hc_vmstate(run, cs);
         break;
 
     default:

@@ -241,6 +241,7 @@ struct kvm_hyperv_exit {
 #define KVM_EXIT_SHM_WRITE        67
 #define KVM_EXIT_PIPE_READ         68
 #define KVM_EXIT_PIPE_WRITE        69
+#define KVM_EXIT_VMSTATE           70
 
 
 /* For KVM_EXIT_INTERNAL_ERROR */
